@@ -1072,7 +1072,7 @@ export class LinkTwin implements INodeType {
 					if (response.error === 0 && response.data?.collections) {
 						return response.data.collections.map((collection: { id: number; name: string }) => ({
 							name: collection.name,
-							value: collection.id,
+							value: collection.name,
 						}));
 					}
 					return [];
@@ -1132,7 +1132,7 @@ export class LinkTwin implements INodeType {
 					if (response.error === 0 && response.data?.pixels) {
 						return response.data.pixels.map((pixel: { id: number; name: string; type: string }) => ({
 							name: `${pixel.name} (${pixel.type})`,
-							value: pixel.id,
+							value: pixel.name,
 						}));
 					}
 					return [];
@@ -1246,7 +1246,7 @@ export class LinkTwin implements INodeType {
 						if (filters.order) qs.order = filters.order;
 						if (filters.date_from) qs.date_from = filters.date_from;
 						if (filters.date_to) qs.date_to = filters.date_to;
-						if (filters.collections && (filters.collections as number[]).length > 0) {
+						if (filters.collections && (filters.collections as string[]).length > 0) {
 							qs.collections = JSON.stringify(filters.collections);
 						}
 						if (filters.timezone) qs.timezone = filters.timezone;
