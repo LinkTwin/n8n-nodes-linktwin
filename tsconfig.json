@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"module": "commonjs",
+		"target": "es2019",
+		"lib": ["es2019", "es2020"],
+		"declaration": true,
+		"resolveJsonModule": true,
+		"noImplicitAny": true,
+		"removeComments": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"strictNullChecks": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"outDir": "./dist",
+		"rootDir": ".",
+		"baseUrl": "."
+	},
+	"include": [
+		"credentials/**/*.ts",
+		"nodes/**/*.ts"
+	],
+	"exclude": [
+		"node_modules/**/*"
+	]
+}
