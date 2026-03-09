@@ -1064,11 +1064,10 @@ export class LinkTwin implements INodeType {
 						Authorization: `Bearer ${credentials.apiKey}`,
 						Accept: 'application/json',
 					},
-					json: true,
 				};
 
 				try {
-					const response = await this.helpers.request(options);
+					const response = await this.helpers.httpRequest(options);
 					if (response.error === 0 && response.data?.collections) {
 						return response.data.collections.map((collection: { id: number; name: string }) => ({
 							name: collection.name,
@@ -1094,11 +1093,10 @@ export class LinkTwin implements INodeType {
 						Authorization: `Bearer ${credentials.apiKey}`,
 						Accept: 'application/json',
 					},
-					json: true,
 				};
 
 				try {
-					const response = await this.helpers.request(options);
+					const response = await this.helpers.httpRequest(options);
 					if (response.error === 0 && response.data?.domains) {
 						return response.data.domains.map((domain: { domain: string }) => ({
 							name: domain.domain,
@@ -1124,11 +1122,10 @@ export class LinkTwin implements INodeType {
 						Authorization: `Bearer ${credentials.apiKey}`,
 						Accept: 'application/json',
 					},
-					json: true,
 				};
 
 				try {
-					const response = await this.helpers.request(options);
+					const response = await this.helpers.httpRequest(options);
 					if (response.error === 0 && response.data?.pixels) {
 						return response.data.pixels.map((pixel: { id: number; name: string; type: string }) => ({
 							name: `${pixel.name} (${pixel.type})`,
@@ -1189,12 +1186,11 @@ export class LinkTwin implements INodeType {
 							}
 						}
 
-						const response = await this.helpers.request({
+						const response = await this.helpers.httpRequest({
 							method: 'POST',
 							url: `${baseUrl}/url/add`,
 							headers,
 							body,
-							json: true,
 						});
 
 						checkApiResponse(response);
@@ -1216,12 +1212,11 @@ export class LinkTwin implements INodeType {
 							qs.timezone = options.timezone;
 						}
 
-						const response = await this.helpers.request({
+						const response = await this.helpers.httpRequest({
 							method: 'GET',
 							url: `${baseUrl}/url/${encodeURIComponent(linkId)}`,
 							headers,
 							qs,
-							json: true,
 						});
 
 						checkApiResponse(response);
@@ -1259,12 +1254,11 @@ export class LinkTwin implements INodeType {
 
 							while (hasMore) {
 								qs.page = page;
-								const response = await this.helpers.request({
+								const response = await this.helpers.httpRequest({
 									method: 'GET',
 									url: `${baseUrl}/urls`,
 									headers,
 									qs,
-									json: true,
 								});
 
 								checkApiResponse(response);
@@ -1282,12 +1276,11 @@ export class LinkTwin implements INodeType {
 								urls: allLinks,
 							};
 						} else {
-							const response = await this.helpers.request({
+							const response = await this.helpers.httpRequest({
 								method: 'GET',
 								url: `${baseUrl}/urls`,
 								headers,
 								qs,
-								json: true,
 							});
 
 							checkApiResponse(response);
@@ -1311,12 +1304,11 @@ export class LinkTwin implements INodeType {
 							}
 						}
 
-						const response = await this.helpers.request({
+						const response = await this.helpers.httpRequest({
 							method: 'PUT',
 							url: `${baseUrl}/url/update/${encodeURIComponent(linkId)}`,
 							headers,
 							body,
-							json: true,
 						});
 
 						checkApiResponse(response);
@@ -1332,11 +1324,10 @@ export class LinkTwin implements INodeType {
 					else if (operation === 'delete') {
 						const linkId = this.getNodeParameter('linkId', i) as string;
 
-						const response = await this.helpers.request({
+						const response = await this.helpers.httpRequest({
 							method: 'DELETE',
 							url: `${baseUrl}/url/delete/${encodeURIComponent(linkId)}`,
 							headers,
-							json: true,
 						});
 
 						checkApiResponse(response);
@@ -1378,12 +1369,11 @@ export class LinkTwin implements INodeType {
 							qs.timezone = options.timezone;
 						}
 
-						const response = await this.helpers.request({
+						const response = await this.helpers.httpRequest({
 							method: 'GET',
 							url: `${baseUrl}/statistics/link/${encodeURIComponent(linkId)}`,
 							headers,
 							qs,
-							json: true,
 						});
 
 						checkApiResponse(response);
