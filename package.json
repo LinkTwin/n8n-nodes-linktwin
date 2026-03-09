@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-linktwin",
 	"version": "1.0.4",
-	"description": "n8n community node for LinkTwin App Deep Linking — Turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or in the user's external browser, boosting clicks and conversions",
+	"description": "n8n community node for LinkTwin - Deep Linking & URL Shortener — Turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or in the user's external browser, boosting clicks and conversions",
 	"keywords": [
 		"n8n-community-node-package",
 		"n8n",

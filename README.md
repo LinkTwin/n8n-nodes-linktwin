@@ -1,6 +1,6 @@
 # n8n-nodes-linktwin
 
-This is an n8n community node for [LinkTwin App Deep Linking](https://linktw.in) — turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or in the user's external browser (Safari, Chrome, etc.), bypassing clunky in-app browsers and boosting clicks and conversions.
+This is an n8n community node for [LinkTwin - Deep Linking & URL Shortener](https://linktw.in) — turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or in the user's external browser (Safari, Chrome, etc.), bypassing clunky in-app browsers and boosting clicks and conversions.
 
 ## Features
 

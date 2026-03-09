@@ -36,7 +36,7 @@ function checkApiResponse(response: IDataObject): void {
  */
 export class LinkTwin implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'LinkTwin',
+		displayName: 'LinkTwin - Deep Linking & URL Shortener',
 		name: 'linkTwin',
 		icon: 'file:linktwin.svg',
 		group: ['transform'],
@@ -44,7 +44,7 @@ export class LinkTwin implements INodeType {
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or external browser, boosting clicks and conversions',
 		defaults: {
-			name: 'LinkTwin',
+			name: 'LinkTwin - Deep Linking & URL Shortener',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
