@@ -2,21 +2,25 @@ import type {
 	IDataObject,
 	IExecuteFunctions,
 	ILoadOptionsFunctions,
+	INode,
 	INodeExecutionData,
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	IHttpRequestMethods,
+	JsonObject,
 } from 'n8n-workflow';
-import { ApplicationError } from 'n8n-workflow';
+import { NodeApiError, NodeOperationError } from 'n8n-workflow';
 
 /**
  * Check API response for errors.
  * LinkTwin API returns HTTP 200 with error info in the body.
  */
-function checkApiResponse(response: IDataObject): void {
+function checkApiResponse(node: INode, response: IDataObject): void {
 	if (response.error != 0) {
-		throw new ApplicationError((response.message as string) || 'Unknown API error');
+		throw new NodeApiError(node, response as JsonObject, {
+			message: (response.message as string) || 'Unknown API error',
+		});
 	}
 }
 
@@ -1055,19 +1059,12 @@ export class LinkTwin implements INodeType {
 			 * Load collections for dropdown selection
 			 */
 			async getCollections(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const credentials = await this.getCredentials('linkTwinApi');
-				const options = {
-					method: 'GET' as IHttpRequestMethods,
-					url: 'https://linktw.in/api/collections',
-					qs: { limit: 100 },
-					headers: {
-						Authorization: `Bearer ${credentials.apiKey}`,
-						Accept: 'application/json',
-					},
-				};
-
 				try {
-					const response = await this.helpers.httpRequest(options);
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
+						method: 'GET' as IHttpRequestMethods,
+						url: 'https://linktw.in/api/collections',
+						qs: { limit: 100 },
+					});
 					if (response.error === 0 && response.data?.collections) {
 						return response.data.collections.map((collection: { id: number; name: string }) => ({
 							name: collection.name,
@@ -1084,19 +1081,12 @@ export class LinkTwin implements INodeType {
 			 * Load domains for dropdown selection
 			 */
 			async getDomains(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const credentials = await this.getCredentials('linkTwinApi');
-				const options = {
-					method: 'GET' as IHttpRequestMethods,
-					url: 'https://linktw.in/api/domains',
-					qs: { limit: 100 },
-					headers: {
-						Authorization: `Bearer ${credentials.apiKey}`,
-						Accept: 'application/json',
-					},
-				};
-
 				try {
-					const response = await this.helpers.httpRequest(options);
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
+						method: 'GET' as IHttpRequestMethods,
+						url: 'https://linktw.in/api/domains',
+						qs: { limit: 100 },
+					});
 					if (response.error === 0 && response.data?.domains) {
 						return response.data.domains.map((domain: { domain: string }) => ({
 							name: domain.domain,
@@ -1113,19 +1103,12 @@ export class LinkTwin implements INodeType {
 			 * Load tracking pixels for dropdown selection
 			 */
 			async getPixels(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const credentials = await this.getCredentials('linkTwinApi');
-				const options = {
-					method: 'GET' as IHttpRequestMethods,
-					url: 'https://linktw.in/api/pixels',
-					qs: { limit: 100 },
-					headers: {
-						Authorization: `Bearer ${credentials.apiKey}`,
-						Accept: 'application/json',
-					},
-				};
-
 				try {
-					const response = await this.helpers.httpRequest(options);
+					const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
+						method: 'GET' as IHttpRequestMethods,
+						url: 'https://linktw.in/api/pixels',
+						qs: { limit: 100 },
+					});
 					if (response.error === 0 && response.data?.pixels) {
 						return response.data.pixels.map((pixel: { id: number; name: string; type: string }) => ({
 							name: `${pixel.name} (${pixel.type})`,
@@ -1149,14 +1132,7 @@ export class LinkTwin implements INodeType {
 
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
-		const credentials = await this.getCredentials('linkTwinApi');
-
 		const baseUrl = 'https://linktw.in/api';
-		const headers = {
-			Authorization: `Bearer ${credentials.apiKey}`,
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-		};
 
 		for (let i = 0; i < items.length; i++) {
 			try {
@@ -1186,14 +1162,13 @@ export class LinkTwin implements INodeType {
 							}
 						}
 
-						const response = await this.helpers.httpRequest({
+						const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 							method: 'POST',
 							url: `${baseUrl}/url/add`,
-							headers,
 							body,
 						});
 
-						checkApiResponse(response);
+						checkApiResponse(this.getNode(), response);
 						responseData = {
 							id: response.id,
 							shorturl: response.shorturl,
@@ -1212,14 +1187,13 @@ export class LinkTwin implements INodeType {
 							qs.timezone = options.timezone;
 						}
 
-						const response = await this.helpers.httpRequest({
+						const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 							method: 'GET',
 							url: `${baseUrl}/url/${encodeURIComponent(linkId)}`,
-							headers,
 							qs,
 						});
 
-						checkApiResponse(response);
+						checkApiResponse(this.getNode(), response);
 						responseData = response as IDataObject;
 					}
 
@@ -1254,14 +1228,13 @@ export class LinkTwin implements INodeType {
 
 							while (hasMore) {
 								qs.page = page;
-								const response = await this.helpers.httpRequest({
+								const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 									method: 'GET',
 									url: `${baseUrl}/urls`,
-									headers,
 									qs,
 								});
 
-								checkApiResponse(response);
+								checkApiResponse(this.getNode(), response);
 
 								if (response.data?.urls) {
 									allLinks.push(...(response.data.urls as IDataObject[]));
@@ -1276,14 +1249,13 @@ export class LinkTwin implements INodeType {
 								urls: allLinks,
 							};
 						} else {
-							const response = await this.helpers.httpRequest({
+							const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 								method: 'GET',
 								url: `${baseUrl}/urls`,
-								headers,
 								qs,
 							});
 
-							checkApiResponse(response);
+							checkApiResponse(this.getNode(), response);
 							responseData = response.data as IDataObject;
 						}
 					}
@@ -1304,14 +1276,13 @@ export class LinkTwin implements INodeType {
 							}
 						}
 
-						const response = await this.helpers.httpRequest({
+						const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 							method: 'PUT',
 							url: `${baseUrl}/url/update/${encodeURIComponent(linkId)}`,
-							headers,
 							body,
 						});
 
-						checkApiResponse(response);
+						checkApiResponse(this.getNode(), response);
 						responseData = {
 							id: response.id,
 							shorturl: response.shorturl,
@@ -1324,19 +1295,18 @@ export class LinkTwin implements INodeType {
 					else if (operation === 'delete') {
 						const linkId = this.getNodeParameter('linkId', i) as string;
 
-						const response = await this.helpers.httpRequest({
+						const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 							method: 'DELETE',
 							url: `${baseUrl}/url/delete/${encodeURIComponent(linkId)}`,
-							headers,
 						});
 
-						checkApiResponse(response);
+						checkApiResponse(this.getNode(), response);
 						responseData = {
 							deleted: true,
 							message: response.message || 'Link has been successfully deleted.',
 						};
 					} else {
-						throw new ApplicationError(`Unknown operation: ${operation}`);
+						throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
 					}
 				}
 
@@ -1369,20 +1339,19 @@ export class LinkTwin implements INodeType {
 							qs.timezone = options.timezone;
 						}
 
-						const response = await this.helpers.httpRequest({
+						const response = await this.helpers.httpRequestWithAuthentication.call(this, 'linkTwinApi', {
 							method: 'GET',
 							url: `${baseUrl}/statistics/link/${encodeURIComponent(linkId)}`,
-							headers,
 							qs,
 						});
 
-						checkApiResponse(response);
+						checkApiResponse(this.getNode(), response);
 						responseData = response.data as IDataObject;
 					} else {
-						throw new ApplicationError(`Unknown operation: ${operation}`);
+						throw new NodeOperationError(this.getNode(), `Unknown operation: ${operation}`);
 					}
 				} else {
-					throw new ApplicationError(`Unknown resource: ${resource}`);
+					throw new NodeOperationError(this.getNode(), `Unknown resource: ${resource}`);
 				}
 
 				returnData.push({
