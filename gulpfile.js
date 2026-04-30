@@ -1,4 +1,4 @@
-const { src, dest } = require('gulp');
+const { src, dest, parallel } = require('gulp');
 
 /**
  * Copy SVG icons to the dist folder
@@ -10,4 +10,12 @@ function buildIcons() {
 		.pipe(dest('dist'));
 }
 
-exports['build:icons'] = buildIcons;
+/**
+ * Copy node codex JSON files (e.g., LinkTwin.node.json) to the dist folder so
+ * n8n can read them alongside the compiled node for category/resource metadata.
+ */
+function buildCodex() {
+	return src(['nodes/**/*.node.json'], { base: '.' }).pipe(dest('dist'));
+}
+
+exports['build:icons'] = parallel(buildIcons, buildCodex);

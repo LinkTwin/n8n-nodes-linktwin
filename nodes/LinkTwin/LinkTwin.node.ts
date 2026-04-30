@@ -10,7 +10,7 @@ import type {
 	IHttpRequestMethods,
 	JsonObject,
 } from 'n8n-workflow';
-import { NodeApiError, NodeOperationError } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
 /**
  * Check API response for errors.
@@ -50,8 +50,8 @@ export class LinkTwin implements INodeType {
 		defaults: {
 			name: 'LinkTwin - Deep Linking & URL Shortener',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,
 		credentials: [
 			{
@@ -59,13 +59,6 @@ export class LinkTwin implements INodeType {
 				required: true,
 			},
 		],
-		requestDefaults: {
-			baseURL: 'https://linktw.in/api',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		},
 		properties: [
 			// ----------------------------------
 			//         Resource Selection

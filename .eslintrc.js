@@ -13,7 +13,10 @@ module.exports = {
 	extends: ['plugin:n8n-nodes-base/nodes'],
 	ignorePatterns: ['node_modules/', 'dist/', '*.js'],
 	rules: {
-		// Allow the standalone checkApiResponse function pattern
-		// (required because 'this' in execute() is IExecuteFunctions, not the class)
+		// n8n manual review (Mar 2026) requires NodeConnectionTypes.Main instead of
+		// 'main' string literals. The lint plugin still enforces the old form, so
+		// disable these two rules until the plugin catches up.
+		'n8n-nodes-base/node-class-description-inputs-wrong-regular-node': 'off',
+		'n8n-nodes-base/node-class-description-outputs-wrong': 'off',
 	},
 };

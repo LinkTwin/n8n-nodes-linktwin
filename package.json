@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-linktwin",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "n8n community node for LinkTwin - Deep Linking & URL Shortener — Turn any link into a smart deep link that opens directly in the right app (YouTube, Amazon, Spotify & 100+ apps) or in the user's external browser, boosting clicks and conversions",
 	"keywords": [
 		"n8n-community-node-package",
@@ -48,7 +48,7 @@
 		"@types/node": "^20.10.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"eslint": "^8.56.0",
-		"eslint-plugin-n8n-nodes-base": "^1.16.0",
+		"eslint-plugin-n8n-nodes-base": "^1.16.6",
 		"gulp": "^4.0.2",
 		"n8n-workflow": "*",
 		"prettier": "^3.2.0",

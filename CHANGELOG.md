@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-04-30
+
+### Changed
+- `inputs` and `outputs` now use `NodeConnectionTypes.Main` instead of the `'main'` string literal (n8n manual review requirement)
+
+### Removed
+- Dead `requestDefaults` block from the node description — the node uses the programmatic style, so this was never read by n8n
+
+### Added
+- `LinkTwin.node.json` codex file for proper categorization (Marketing, Analytics) and discoverability in the n8n node panel
+
 ## [1.0.4] - 2026-02-09
 
 ### Added

@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-base.linkTwin",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Marketing", "Analytics"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://linktw.in/api"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/LinkTwin/n8n-nodes-linktwin"
+			}
+		]
+	}
+}
