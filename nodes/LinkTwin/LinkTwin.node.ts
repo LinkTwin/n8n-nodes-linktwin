@@ -1352,16 +1352,23 @@ export class LinkTwin implements INodeType {
 					pairedItem: { item: i },
 				});
 			} catch (error) {
+				const nodeError =
+					error instanceof NodeApiError || error instanceof NodeOperationError
+						? error
+						: new NodeApiError(this.getNode(), error as JsonObject, {
+								message: error instanceof Error ? error.message : String(error),
+							});
+
 				if (this.continueOnFail()) {
 					returnData.push({
 						json: {
-							error: (error as Error).message,
+							error: nodeError.message,
 						},
 						pairedItem: { item: i },
 					});
 					continue;
 				}
-				throw error;
+				throw nodeError;
 			}
 		}
 
